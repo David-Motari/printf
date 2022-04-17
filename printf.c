@@ -10,70 +10,46 @@
  * 
  * Return: the number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
-	/*The number of characters printed*/
-	int len = 0;
-	int parameter_index = 1;
-
-	while (*format)
+	if (format != NULL)
 	{
-		/*check for %c format*/
-		if (*format == '%' && *(format+1) == 'c')
+		int count = 0, i;
+		int (*m)(va_list);
+		va_list args;
+
+		va_start(args, format);
+		i = 0;
+		if (format[0] == '%' && format[1] == '\0')
+			return (-1);
+		while (format != NULL && format[i] != '\0')
 		{
-			va_list ap;
-			char c;
-			int i;
-
-			va_start(ap, format);
-				i = 0;
-
-				for (i = 0; i < parameter_index; i++)
-					c = va_arg(ap, int);
-
-				write(1, &c, 1);
-			va_end(ap);
-
-			/*skip the %c characters*/
-			len += 2;
-			format += 2;
-			parameter_index++;
-		}
-
-		/*check for %s format and print string*/
-		if (*format == '%' && *(format+1) == 's')
-		{
-			va_list ap;
-			char *str;
-			int i;
-
-			va_start(ap, format);
-				i = 0;
-				
-				for (i = 0; i < parameter_index; i++)
-					str = va_arg(ap, char*);
-
-				while (*str)
+			if (format[i] == '%')
+			{
+				if (format[i + 1] == '%')
 				{
-					write(1, &*str, 1);
-					str++;
+					count += _putchar(format[i]);
+					i += 2;
 				}
-
-			va_end(ap);
-
-			/*skip the %s characters*/
-			len += 2;
-			format += 2;
-			parameter_index++;
+				else
+				{
+					m = get_func(format[i + 1]);
+					if (m)
+						count += m(args);
+					else
+						count = _putchar(format[i]) + _putchar(format[i + 1]);
+					i += 2;
+				}
+			}
+			else
+			{
+				count += _putchar(format[i]);
+				i++;
+			}
 		}
-
-		/*Write to stdout*/
-		write(1, &*format, 1);
-
-		/*Updation*/
-		len++;
-		format++;
+		va_end(args);
+		return (count);
 	}
-
-	return (len);
+	return (-1);
 }
