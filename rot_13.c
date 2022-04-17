@@ -1,31 +1,43 @@
 #include "main.h"
+
 /**
- * format_R - functtion that converts a string into rot13
- * @valist: argument passed
- * @buffer: values stored
- * @index: tracks index position
- */
-void format_R(va_list valist, char *buffer, int *index)
+  * rot13 - fills memory with a constant byte
+  * @a: the value to print
+  * Return: numbers of characters printed
+  */
+int rot13(va_list a)
 {
-	char *s;
-	int i, j;
+	char *st = va_arg(a, char *), *rot = "";
+	int i = 0, j = 0, k = 0, cont = 0;
+	char leet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char chan[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	char *s1 = "abcdefghijklmABCDEFGHIJKLM ,?!;'@-=+\"\\$%^&*()`~<>/:[]{}_|.\n";
-	char *s2 = "nopqrstuvwxyzNOPQRSTUVWXYZ ,?!;'@-=+\"\\$%^&*()`~<>/:[]{}_|.\n";
-
-	s = va_arg(valist, char *);
-	for (i = 0; s[i] != '\0'; i++, *index += 1)
+	if (st == NULL)
 	{
-		for (j = 0; s1[j] != '\0'; j++)
-		{
-			if (s[i] == s1[j])
-			{
-				buffer[*index] = s2[j];
-			}
-			else if (s[i] == s2[j])
-			{
-				buffer[*index] = s1[j];
-			}
-		}
+		st = "(null)";
+		cont = _write(1, rot, i);
+		return (cont);
 	}
+
+	for (i = 0; st[i] != '\0'; i++)
+		;
+
+	rot = malloc(i + 1);
+	if (rot == NULL)
+		return (0);
+
+	for (j = 0; j < i; j++)
+	{
+		for (k = 0; leet[k] != '\0'; k++)
+			if (st[j] == leet[k])
+				break;
+		if (leet[k] != '\0')
+			rot[j] = chan[k];
+		else
+			rot[j] = st[j];
+	}
+	rot[j] = '\0';
+	cont = _write(1, rot, i);
+	free(rot);
+	return (cont);
 }
