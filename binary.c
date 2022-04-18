@@ -3,31 +3,30 @@
 #include "main.h"
 
 /**
- * binary - print a binary number
- *@va:unsigned integer input
- *
- * Return: no return
+ * p_rev_string - writes string to buffer or stdout in reverse
+ * @inv: the arguments inventory with most commonly used arguments
+ * Return: number of chars wrote to buffer
  */
-int binary(va_list va)
+int print_rev(va_list va)
 {
-	unsigned int c;
-	int  i, j;
-	int arr[100];
+	int i = 0, j, length;
+	char *string, *copy;
 
-	c = va_arg(va, int);
-	i = 0;
-	if (c == 0)
+	string = va_arg(*(inv->args), char *);
+
+	length = _strlen(string);
+	if (length == 1)
 	{
-		_putchar('0');
-		return (1);
+		inv->c0 = string[0];
+		write_buffer(inv);
 	}
-	while (c > 0)
+	else
 	{
-		arr[i] = c % 2;
-		c = c / 2;
-		i++;
+		copy = _calloc(length + 1, sizeof(char));
+		for (i = length - 1, j = 0; i >= 0; i--, j++)
+			copy[j] = string[i];
+
+		puts_buffer(inv, copy);
+		free(copy);
 	}
-	for (j = i - 1; j >= 0; j--)
-		_putchar(arr[j] + '0');
-	return (i);
 }
