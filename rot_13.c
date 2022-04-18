@@ -20,7 +20,6 @@ char *rot13(char *p)
 			if (*p == rot13[i])
 			{
 				*p = ROT13[i];
-				break;
 			}
 		}
 		p++;
