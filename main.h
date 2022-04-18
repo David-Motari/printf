@@ -28,6 +28,11 @@ char t;
 int (*f)(va_list va);
 } types;
 
+
+int print_hex(va_list l, flags_t *f);
+int print_hex_big(va_list l, flags_t *f);
+int print_binary(va_list l, flags_t *f);
+int print_octal(va_list l, flags_t *f);
 int _putchar(char c);
 int _strlen(char *s);
 int print_number(va_list va);
