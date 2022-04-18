@@ -94,12 +94,7 @@ int _printf(const char *format, ...)
 int i = 0, j, len = 0, count;
 va_list valist;
 types difftypes[] = {{'c', pt_chr}, {'s', pt_string}, {'d', print_number},
-{'i', print_number}}; 
-/*
-* {'b', binary}, {'u', print_unsigned},
-*{'x', hexa}, {'X', hexa_upper}, {'o', octal}, {'R', print_rot},
-*{'r', print_rev}, {'S', stringhexa}, {'p', pointer}};
-*/
+{'i', print_number}, {'r', prt_rev}, {'R', print_rot}}; 
 if (format == NULL || (format[0] == '%' && format[1] == 0))
 return (-1);
 va_start(valist, format);
