@@ -1,98 +1,45 @@
 #include "main.h"
+#include <stdlib.h>
 
 /**
-*
-* _printf - produces output according to a format.
-*
-* @format: is the string given
-*
-* Return: numbers of characters printed
-*
-*/
-
+ * _printf - prints any string with certain flags for modification
+ * @format: the string of characters to write to buffer
+ * Return: an integer that counts how many writes to the buffer were made
+ */
 int _printf(const char *format, ...)
 {
-int index = 0, cnt = 0;
-va_list va;
-int (*ptr)();
+	int i = 0, var = 0;
+	va_list v_ls;
+	buffer *buf;
 
-if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-return (-1);
-va_start(va, format);
-for (index = 0; format != NULL && format[index] != '\0'; index++)
-{
-if (format[index] == '%')
-{
-ptr = equal(format + index);
-if (ptr != NULL)
-{
-cnt += ptr(va);
-index++;
+	buf = buf_new();
+	if (buf == NULL)
+		return (-1);
+	if (format == NULL)
+		return (-1);
+	va_start(v_ls, format);
+	while (format[i])
+	{
+		buf_wr(buf);
+		if (format[i] == '%')
+		{
+			var = opid(buf, v_ls, format, i);
+			if (var < 0)
+			{
+				i = var;
+				break;
+			}
+			i += var;
+			continue;
+		}
+		buf->str[buf->index] = format[i];
+		buf_inc(buf);
+		i++;
+	}
+	buf_write(buf);
+	if (var >= 0)
+		i = buf->overflow;
+	buf_end(buf);
+	va_end(v_ls);
+	return (i);
 }
-else
-cnt += _putchar(format[index]);
-}
-else
-cnt += _putchar(format[index]);
-}
-cnt += _write(-1, "c", 1);
-va_end(va);
-return (cnt);
-}
-
-
-
-/**
-*
-* _putchar - writes the character a to stdout
-*
-* @a: the character to print
-*
-* Return: numbers of characters printed*
-*/
-
-int _putchar(char a)
-
-{
-return (_write(1, &(a), 1));
-}
-
-
-
-/**
-*
-* equal - returns the right function of the specifier
-*
-* @format: the value to print
-*
-* Return: numbers of characters printed
-*/
-
-int (*equal(const char *format))()
-
-{
-int j;
-op_t o[] = {
-{"c", ch},
-{"s", st},
-{"i", inte},
-{"d", inte},
-{"%", por},
-{"b", bina},
-{"o", octa},
-{"u", unsig},
-{"x", hexal},
-{"X", hexau},
-{"S", sst},
-{"p", point},
-{"r", reve},
-{"R", rot13},
-{NULL, NULL},
-};
-
-for (j = 0; o[j].op != NULL; j++)
-if (format[1] == o[j].op[0])
-return (o[j].f);
-return (o[j].f);
-}
-
