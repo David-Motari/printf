@@ -1,45 +1,98 @@
 #include "main.h"
-#include <stdlib.h>
+#include "main.h"
 
 /**
- * _printf - prints any string with certain flags for modification
- * @format: the string of characters to write to buffer
- * Return: an integer that counts how many writes to the buffer were made
- */
+*
+* _printf - produces output according to a format.
+*
+* @format: is the string given
+*
+* Return: numbers of characters printed
+*
+*/
+
 int _printf(const char *format, ...)
 {
-	int (*pfunc)(va_list, flags_t *);
-	const char *p;
-	va_list arguments;
-	flags_t flags = {0, 0, 0};
+int index = 0, cnt = 0;
+va_list va;
+int (*ptr)();
 
-	register int count = 0;
+if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+return (-1);
+va_start(va, format);
+for (index = 0; format != NULL && format[index] != '\0'; index++)
+{
+if (format[index] == '%')
+{
+ptr = equal(format + index);
+if (ptr != NULL)
+{
+cnt += ptr(va);
+index++;
+}
+else
+cnt += _putchar(format[index]);
+}
+else
+cnt += _putchar(format[index]);
+}
+cnt += _write(-1, "c", 1);
+va_end(va);
+return (cnt);
+}
 
-	va_start(arguments, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-	for (p = format; *p; p++)
-	{
-		if (*p == '%')
-		{
-			p++;
-			if (*p == '%')
-			{
-				count += _putchar('%');
-				continue;
-			}
-			while (get_flag(*p, &flags))
-				p++;
-			pfunc = get_print(*p);
-			count += (pfunc)
-				? pfunc(arguments, &flags)
-				: _printf("%%%c", *p);
-		} else
-			count += _putchar(*p);
-	}
-	_putchar(-1);
-	va_end(arguments);
-	return (count);
+
+
+/**
+*
+* _putchar - writes the character a to stdout
+*
+* @a: the character to print
+*
+* Return: numbers of characters printed*
+*/
+
+int _putchar(char a)
+
+{
+return (_write(1, &(a), 1));
+}
+
+
+
+/**
+*
+* equal - returns the right function of the specifier
+*
+* @format: the value to print
+*
+* Return: numbers of characters printed
+*/
+
+int (*equal(const char *format))()
+
+{
+int j;
+op_t o[] = {
+{"c", ch},
+{"s", st},
+{"i", inte},
+{"d", inte},
+{"%", por},
+{"b", bina},
+{"o", octa},
+{"u", unsig},
+{"x", hexal},
+{"X", hexau},
+{"S", sst},
+{"p", point},
+{"r", reve},
+{"R", rot13},
+{NULL, NULL},
+};
+
+for (j = 0; o[j].op != NULL; j++)
+if (format[1] == o[j].op[0])
+return (o[j].f);
+return (o[j].f);
 }
