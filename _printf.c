@@ -1,98 +1,134 @@
 #include "main.h"
-#include "main.h"
 
 /**
+* pt_chr - print a character
+*@va: character
 *
-* _printf - produces output according to a format.
-*
-* @format: is the string given
-*
-* Return: numbers of characters printed
-*
+* Return: no return
 */
+int pt_chr(va_list va)
+{
+int c;
 
+c = va_arg(va, int);
+_putchar(c);
+return (1);
+}
+/**
+* pt_string - print a string
+*@va: pointer to string
+*
+* Return: no return
+*/
+int pt_string(va_list va)
+{
+int i, j;
+char n[] = "(null)";
+char *s = va_arg(va, char *);
+
+if (s == NULL)
+{
+for (i = 0; n[i] != '\0'; i++)
+_putchar(n[i]);
+return (6);
+}
+for (j = 0; s[j] != '\0'; j++)
+_putchar(s[j]);
+return (j);
+}
+/**
+* print_number - Entry point
+*@va: the integer to print
+* Return: no return
+*/
+int print_number(va_list va)
+{
+int i, len, r, l;
+unsigned int abs, num, numt;
+int n = va_arg(va, int);
+
+len = 0;
+i = 0;
+r = 1;
+l = 1;
+if (n < 0)
+{
+_putchar('-');
+len++;
+abs = -n;
+} else
+{
+abs = n;
+}
+
+num = abs;
+while (num > 0)
+{
+num /= 10;
+i++;
+}
+
+while (r < i)
+{
+l *= 10;
+r++;
+}
+while (l >= 1)
+{
+numt = (abs / l) % 10;
+_putchar(numt + '0');
+len++;
+l /= 10;
+}
+return (len);
+}
+
+/**
+ * _printf - print output according to a format
+ *@format: first argument
+ *
+ * Return: the number of characters printed(excluding the null byte)
+ */
 int _printf(const char *format, ...)
 {
-int index = 0, cnt = 0;
-va_list va;
-int (*ptr)();
-
-if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+int i = 0, j, len = 0, count;
+va_list valist;
+types difftypes[] = {{'c', pt_chr}, {'s', pt_string}, {'d', print_number},
+{'i', print_number}}; 
+/*
+* {'b', binary}, {'u', print_unsigned},
+*{'x', hexa}, {'X', hexa_upper}, {'o', octal}, {'R', print_rot},
+*{'r', print_rev}, {'S', stringhexa}, {'p', pointer}};
+*/
+if (format == NULL || (format[0] == '%' && format[1] == 0))
 return (-1);
-va_start(va, format);
-for (index = 0; format != NULL && format[index] != '\0'; index++)
+va_start(valist, format);
+while (format != NULL && format[i])
 {
-if (format[index] == '%')
-{
-ptr = equal(format + index);
-if (ptr != NULL)
-{
-cnt += ptr(va);
-index++;
-}
+if (format[i] != '%')
+len += _putchar(format[i]);
 else
-cnt += _putchar(format[index]);
-}
-else
-cnt += _putchar(format[index]);
-}
-cnt += _write(-1, "c", 1);
-va_end(va);
-return (cnt);
-}
-
-
-
-/**
-*
-* _putchar - writes the character a to stdout
-*
-* @a: the character to print
-*
-* Return: numbers of characters printed*
-*/
-
-int _putchar(char a)
-
 {
-return (_write(1, &(a), 1));
-}
-
-
-
-/**
-*
-* equal - returns the right function of the specifier
-*
-* @format: the value to print
-*
-* Return: numbers of characters printed
-*/
-
-int (*equal(const char *format))()
-
+i++;
+if (format[i] == '%')
+len += _putchar('%');
+j = 0;
+count = 0;
+while (j < 13)
 {
-int j;
-op_t o[] = {
-{"c", ch},
-{"s", st},
-{"i", inte},
-{"d", inte},
-{"%", por},
-{"b", bina},
-{"o", octa},
-{"u", unsig},
-{"x", hexal},
-{"X", hexau},
-{"S", sst},
-{"p", point},
-{"r", reve},
-{"R", rot13},
-{NULL, NULL},
-};
-
-for (j = 0; o[j].op != NULL; j++)
-if (format[1] == o[j].op[0])
-return (o[j].f);
-return (o[j].f);
+if (format[i] == difftypes[j].t)
+{
+len += difftypes[j].f(valist);
+count = 1;
+break; }
+j++; }
+if (!count && format[i] != '%')
+{
+len++;
+len++;
+_putchar('%');
+_putchar(format[i]); }}
+i++; }
+va_end(valist);
+return (len);
 }
