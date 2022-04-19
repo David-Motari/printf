@@ -28,6 +28,8 @@ int (*f)(va_list va);
 } 
 types;
 
+
+int print_bigS(va_list l, flags_t *f);
 int _putchar(char c);
 int _strlen(char *s);
 int print_number(va_list va);
