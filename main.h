@@ -26,7 +26,8 @@ typedef struct types_arguements
 {
 char t;
 int (*f)(va_list va);
-} types;
+} 
+types;
 
 int _putchar(char c);
 int _strlen(char *s);
