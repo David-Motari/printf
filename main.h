@@ -1,16 +1,15 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
+
+/*Header files*/
 #include <stdarg.h>
-
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <string.h>
-
 #include <unistd.h>
 
-
+/*Macros*/
+#define BUFSIZE 1024
 
 /**
 * struct types_arguements - Struct op
