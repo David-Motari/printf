@@ -1,9 +1,9 @@
-# C - printf project.
+# 0x11 C - printf project.
 Collaboration between David Motari and Keith Obando, to create our own version of printf. 
-# Prototype
+## Prototype
 The prototype is int _printf(const char *format, ...);_
 
-# Authorized functions and macros
+## Authorized functions and macros
 write (man 2 write)
 malloc (man 3 malloc)
 free (man 3 free)
@@ -11,9 +11,9 @@ va_start (man 3 va_start)
 va_end (man 3 va_end)
 va_copy (man 3 va_copy)
 va_arg (man 3 va_arg)
-# Compilation
+## Compilation
 The code will be compiled using $ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c*
-# Workflow
+## Workflow
 - Task 0 produces output according to a format. 
 - Task 1 handle the following conversion specifiers:
 d
