@@ -28,7 +28,6 @@ int (*f)(va_list va);
 } 
 types;
 
-int _puts(char *str);
 int _putchar(char c);
 int _strlen(char *s);
 int print_number(va_list va);
