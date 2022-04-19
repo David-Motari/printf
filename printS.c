@@ -10,9 +10,9 @@
 
 int _puts(char *str)
 {
-	register int i;
+register int i;
 
-	for (i = 0; str[i] != '\0'; i++)
-		_putchar(str[i]);
-	return (i);
+for (i = 0; str[i] != '\0'; i++)
+_putchar(str[i]);
+return (i);
 }
